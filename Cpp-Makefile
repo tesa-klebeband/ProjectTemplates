@@ -1,0 +1,25 @@
+CPP = g++
+LINKER =
+OPTIMIZATION = -Ofast
+BUILD_DIR = build
+OBJ_DIR = $(BUILD_DIR)/obj
+SRC_DIR = src
+EXECUTABLE = example
+
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CPP) $(OPTIMIZATION) -c -o $@ $<
+
+all: prepare $(EXECUTABLE)
+
+prepare:
+	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(BUILD_DIR)
+
+$(EXECUTABLE): $(OBJS)
+	$(CPP) $(OPTIMIZATION) -o $(BUILD_DIR)/$@ $^ $(LINKER)
+
+clean:
+	@rm -rf $(BUILD_DIR)
